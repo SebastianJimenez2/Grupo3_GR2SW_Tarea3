@@ -38,10 +38,7 @@ public class Sistema {
 
     @PostMapping("/registrar-juguete")
     public String registrarJuguete(@RequestParam int IDJuguete, @RequestParam BigDecimal PrecioJuguete, @RequestParam int Cantidad, Model model) {
-        TypedQuery<Integer> query = entityManager.createQuery("SELECT a.id FROM JuguetesEntity a", Integer.class);
-        List<Integer> idsJuguetes = query.getResultList();
-
-        if (idsJuguetes.contains(IDJuguete)) {
+        if (existeJuguete(IDJuguete)) {
             model.addAttribute("error2", true);
         } else {
             JuguetesEntity juguete = new JuguetesEntity();
@@ -52,6 +49,13 @@ public class Sistema {
             model.addAttribute("error2", false);
         }
         return "GestionJuguete";
+    }
+
+    public boolean existeJuguete(int IDJuguete) {
+        TypedQuery<Integer> query = entityManager.createQuery("SELECT a.id FROM JuguetesEntity a", Integer.class);
+        List<Integer> idsJuguetes = query.getResultList();
+
+        return idsJuguetes.contains(IDJuguete);
     }
 
     public void generarComprobante() {
