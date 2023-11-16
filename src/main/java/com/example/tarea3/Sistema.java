@@ -65,7 +65,10 @@ public class Sistema {
 
         Optional<AdministradoresEntity> usuariosRegistradosEnBDD = query.getResultList().stream().findFirst();
 
-        if (usuariosRegistradosEnBDD.isPresent() && usuariosRegistradosEnBDD.get().getContrasenia().trim().equals(password)) {
+        boolean usuarioExisteEnBDD = usuariosRegistradosEnBDD.isPresent();
+        boolean contraseniaCoincideConUsuarioIngresado = usuariosRegistradosEnBDD.get().getContrasenia().trim().equals(password);
+
+        if (usuarioExisteEnBDD && contraseniaCoincideConUsuarioIngresado) {
             return "GestionJuguete";
         }
         return "redirect:/?error=true";
