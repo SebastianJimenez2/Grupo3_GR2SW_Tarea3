@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -41,22 +39,17 @@ public class Sistema {
     public String registrarJuguete(@RequestParam int IDJuguete, @RequestParam BigDecimal PrecioJuguete, @RequestParam int Cantidad, Model model) {
         TypedQuery<Integer> query = entityManager.createQuery("SELECT a.id FROM JuguetesEntity a", Integer.class);
         List<Integer> idsJuguetes = query.getResultList();
-        boolean error = false;
 
         if (idsJuguetes.contains(IDJuguete)) {
-            error = true;
+            model.addAttribute("error2", true);
         } else {
-            // Crear un nuevo juguete solo si el IDJuguete no existe
             JuguetesEntity juguete = new JuguetesEntity();
             juguete.setId(IDJuguete);
             juguete.setPrecio(PrecioJuguete);
             juguete.setCantidad(Cantidad);
-
             jugueteRepository.save(juguete);
-
-            error = false;
+            model.addAttribute("error2", false);
         }
-        model.addAttribute("error2", error);
         return "GestionJuguete";
     }
 
