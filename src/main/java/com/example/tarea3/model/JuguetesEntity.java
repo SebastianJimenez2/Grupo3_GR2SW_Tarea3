@@ -3,6 +3,7 @@ package com.example.tarea3.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "juguetes", schema = "public", catalog = "Jugueton")
@@ -49,9 +50,9 @@ public class JuguetesEntity {
 
         JuguetesEntity that = (JuguetesEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (precio != null ? !precio.equals(that.precio) : that.precio != null) return false;
-        if (cantidad != null ? !cantidad.equals(that.cantidad) : that.cantidad != null) return false;
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(precio, that.precio)) return false;
+        if (!Objects.equals(cantidad, that.cantidad)) return false;
 
         return true;
     }

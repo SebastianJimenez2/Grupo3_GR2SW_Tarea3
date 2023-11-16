@@ -2,6 +2,8 @@ package com.example.tarea3.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "administradores", schema = "public", catalog = "Jugueton")
 public class AdministradoresEntity {
@@ -69,11 +71,11 @@ public class AdministradoresEntity {
 
         AdministradoresEntity that = (AdministradoresEntity) o;
 
-        if (idAdmin != null ? !idAdmin.equals(that.idAdmin) : that.idAdmin != null) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (apellido != null ? !apellido.equals(that.apellido) : that.apellido != null) return false;
-        if (usuario != null ? !usuario.equals(that.usuario) : that.usuario != null) return false;
-        if (contrasenia != null ? !contrasenia.equals(that.contrasenia) : that.contrasenia != null) return false;
+        if (!Objects.equals(idAdmin, that.idAdmin)) return false;
+        if (!Objects.equals(nombre, that.nombre)) return false;
+        if (!Objects.equals(apellido, that.apellido)) return false;
+        if (!Objects.equals(usuario, that.usuario)) return false;
+        if (!Objects.equals(contrasenia, that.contrasenia)) return false;
 
         return true;
     }
