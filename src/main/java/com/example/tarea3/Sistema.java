@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class Sistema {
@@ -59,13 +60,13 @@ public class Sistema {
 
     @PostMapping("/verificarCredenciales")
     public String verificarCredenciales(String usuario, String password) {
-        TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a", AdministradoresEntity.class);
-        List<AdministradoresEntity> administradores = query.getResultList();
+        TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a WHERE a.usuario = :usuario", AdministradoresEntity.class);
+        query.setParameter("usuario", usuario);
 
-        for (AdministradoresEntity administrador : administradores) {
-            if (administrador.getUsuario().trim().equals(usuario) && administrador.getContrasenia().trim().equals(password)) {
-                return "GestionJuguete";
-            }
+        Optional<AdministradoresEntity> usuariosRegistradosEnBDD = query.getResultList().stream().findFirst();
+
+        if (usuariosRegistradosEnBDD.isPresent() && usuariosRegistradosEnBDD.get().getContrasenia().trim().equals(password)) {
+            return "GestionJuguete";
         }
         return "redirect:/?error=true";
     }
