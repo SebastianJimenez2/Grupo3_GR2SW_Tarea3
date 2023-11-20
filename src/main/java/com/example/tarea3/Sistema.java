@@ -64,9 +64,7 @@ public class Sistema {
 
         return idsJuguetes.contains(IDJuguete);
     }
-
-
-
+    
     @PostMapping("/verificarCredenciales")
     public String verificarCredenciales(String usuario, String password, Model model) {
         //TODO: ¿Qué pasa con la contraseña si no existe el usuario?
