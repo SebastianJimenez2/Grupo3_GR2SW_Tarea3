@@ -47,15 +47,11 @@ public class Sistema {
             juguete.setCantidad(Cantidad);
             jugueteRepository.save(juguete);
             model.addAttribute("error2", false);
-            generarComprobante(juguete, model);
+
+            Comprobante comprobante = new Comprobante();
+            comprobante.generarComprobante(juguete, model);
             return "Comprobante";
         }
-    }
-
-    public void generarComprobante(JuguetesEntity juguete, Model model) {
-        model.addAttribute("IDJuguete", juguete.getId());
-        model.addAttribute("Precio", juguete.getPrecio());
-        model.addAttribute("Cantidad", juguete.getCantidad());
     }
 
     public boolean existeJuguete(int IDJuguete) {
