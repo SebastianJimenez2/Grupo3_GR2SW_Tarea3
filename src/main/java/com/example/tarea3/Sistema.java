@@ -72,12 +72,10 @@ public class Sistema {
         boolean usuarioExisteEnBDD = usuariosRegistradosEnBDD.isPresent();
         boolean contraseniaCoincideConUsuarioIngresado = usuariosRegistradosEnBDD.get().getContrasenia().trim().equals(password);
 
-        if (usuarioExisteEnBDD && contraseniaCoincideConUsuarioIngresado) {
-            model.addAttribute("error", false);
-            return "GestionJuguete";
-        } else {
+        if (!(usuarioExisteEnBDD && contraseniaCoincideConUsuarioIngresado)) {
             model.addAttribute("error", true);
+            return "Login";
         }
-        return "Login";
+        return "GestionJuguete";
     }
 }
