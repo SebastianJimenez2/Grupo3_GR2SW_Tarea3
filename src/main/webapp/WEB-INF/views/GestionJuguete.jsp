@@ -71,13 +71,13 @@
         if (error == false) {
 %>
 <script>
-    alert("Juguete registrado con exito");
+            alert("Juguete registrado con exito");
 </script>
 <%
-} else {
+        } else {
 %>
 <script>
-    alert("Ya existe un juguete con ese ID");
+            alert("Ya existe un juguete con ese ID");
 </script>
 <%
         }

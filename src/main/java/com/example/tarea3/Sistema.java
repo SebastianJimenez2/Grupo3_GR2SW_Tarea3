@@ -63,7 +63,7 @@ public class Sistema {
     }
 
     @PostMapping("/verificarCredenciales")
-    public String verificarCredenciales(String usuario, String password) {
+    public String verificarCredenciales(String usuario, String password, Model model) {
         TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a WHERE a.usuario = :usuario", AdministradoresEntity.class);
         query.setParameter("usuario", usuario);
 
@@ -73,8 +73,11 @@ public class Sistema {
         boolean contraseniaCoincideConUsuarioIngresado = usuariosRegistradosEnBDD.get().getContrasenia().trim().equals(password);
 
         if (usuarioExisteEnBDD && contraseniaCoincideConUsuarioIngresado) {
+            model.addAttribute("error", false);
             return "GestionJuguete";
+        } else {
+            model.addAttribute("error", true);
         }
-        return "redirect:/?error=true";
+        return "Login";
     }
 }

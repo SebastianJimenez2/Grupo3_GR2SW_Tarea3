@@ -61,13 +61,19 @@
     <input type="submit" value="Login">
 </form>
 
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const error = urlParams.get('error');
+<%
+    boolean error_login;
+    if (request.getAttribute("error") != null) {
+        error_login = (boolean) request.getAttribute("error");
 
-    if (error) {
-        alert('Credenciales incorrectas. Por favor, intentelo de nuevo.');
-    }
+        if (error_login) {
+%>
+<script>
+            alert("Credenciales incorrectas");
 </script>
+<%
+        }
+    }
+%>
 </body>
 </html>
