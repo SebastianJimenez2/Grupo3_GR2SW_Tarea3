@@ -48,10 +48,14 @@ public class Sistema {
             jugueteRepository.save(juguete);
             model.addAttribute("error2", false);
 
-            Comprobante comprobante = new Comprobante();
-            comprobante.generarComprobante(juguete, model);
-            return "Comprobante";
+            return generacionDeComprobanteDeJugueteRegistrado(model, juguete);
         }
+    }
+
+    private String generacionDeComprobanteDeJugueteRegistrado(Model model, JuguetesEntity juguete) {
+        Comprobante comprobante = new Comprobante();
+        comprobante.generarComprobante(juguete, model);
+        return "Comprobante";
     }
 
     public boolean existeJuguete(int IDJuguete) {
