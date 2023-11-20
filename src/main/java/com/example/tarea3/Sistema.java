@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class Sistema {
@@ -40,6 +39,7 @@ public class Sistema {
     public String registrarJuguete(@RequestParam int IDJuguete, @RequestParam BigDecimal PrecioJuguete, @RequestParam int Cantidad, Model model) {
         if (existeJuguete(IDJuguete)) {
             model.addAttribute("error2", true);
+            return "GestionJuguete";
         } else {
             JuguetesEntity juguete = new JuguetesEntity();
             juguete.setId(IDJuguete);
@@ -47,8 +47,15 @@ public class Sistema {
             juguete.setCantidad(Cantidad);
             jugueteRepository.save(juguete);
             model.addAttribute("error2", false);
+            generarComprobante(juguete, model);
+            return "Comprobante";
         }
-        return "GestionJuguete";
+    }
+
+    public void generarComprobante(JuguetesEntity juguete, Model model) {
+        model.addAttribute("IDJuguete", juguete.getId());
+        model.addAttribute("Precio", juguete.getPrecio());
+        model.addAttribute("Cantidad", juguete.getCantidad());
     }
 
     public boolean existeJuguete(int IDJuguete) {
@@ -58,12 +65,11 @@ public class Sistema {
         return idsJuguetes.contains(IDJuguete);
     }
 
-    public void generarComprobante() {
 
-    }
 
     @PostMapping("/verificarCredenciales")
     public String verificarCredenciales(String usuario, String password, Model model) {
+        //TODO: ¿Qué pasa con la contraseña si no existe el usuario?
         AdministradoresEntity usuarioObtenidoDeLaBDD = obtenerUsuarioDeLaBDD(usuario);
         boolean contraseniaCoincideConUsuarioIngresado = usuarioObtenidoDeLaBDD.getContrasenia().trim().equals(password);
 
