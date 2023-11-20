@@ -64,18 +64,20 @@ public class Sistema {
 
     @PostMapping("/verificarCredenciales")
     public String verificarCredenciales(String usuario, String password, Model model) {
-        TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a WHERE a.usuario = :usuario", AdministradoresEntity.class);
-        query.setParameter("usuario", usuario);
+        AdministradoresEntity usuarioObtenidoDeLaBDD = obtenerUsuarioDeLaBDD(usuario);
+        boolean contraseniaCoincideConUsuarioIngresado = usuarioObtenidoDeLaBDD.getContrasenia().trim().equals(password);
 
-        Optional<AdministradoresEntity> usuariosRegistradosEnBDD = query.getResultList().stream().findFirst();
-
-        boolean usuarioExisteEnBDD = usuariosRegistradosEnBDD.isPresent();
-        boolean contraseniaCoincideConUsuarioIngresado = usuariosRegistradosEnBDD.get().getContrasenia().trim().equals(password);
-
-        if (!(usuarioExisteEnBDD && contraseniaCoincideConUsuarioIngresado)) {
+        if (usuarioObtenidoDeLaBDD == null || !contraseniaCoincideConUsuarioIngresado) {
             model.addAttribute("error", true);
             return "Login";
         }
         return "GestionJuguete";
+    }
+
+    private AdministradoresEntity obtenerUsuarioDeLaBDD(String usuario) {
+        TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a WHERE a.usuario = :usuario", AdministradoresEntity.class);
+        query.setParameter("usuario", usuario);
+
+        return query.getSingleResult();
     }
 }
