@@ -4,6 +4,7 @@ import com.example.tarea3.model.JuguetesEntity;
 import com.example.tarea3.repository.AdministradorRepository;
 import com.example.tarea3.model.AdministradoresEntity;
 import com.example.tarea3.repository.JugueteRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.swing.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -64,7 +67,7 @@ public class Sistema {
 
         return idsJuguetes.contains(IDJuguete);
     }
-    
+
     @PostMapping("/verificarCredenciales")
     public String verificarCredenciales(String usuario, String password, Model model) {
         //TODO: ¿Qué pasa con la contraseña si no existe el usuario?
@@ -83,5 +86,34 @@ public class Sistema {
         query.setParameter("usuario", usuario);
 
         return query.getSingleResult();
+    }
+
+    @PostConstruct
+    public void init() {
+        venderJuguete(12, 2);
+    }
+
+    public void venderJuguete(int IDJuguete, int cantidad){
+        int index = 0;
+        boolean elJugueteExiste = existeJuguete(IDJuguete);
+
+        if (elJugueteExiste){
+            TypedQuery<JuguetesEntity> query = entityManager.createQuery("SELECT a FROM JuguetesEntity a", JuguetesEntity.class);
+            List<JuguetesEntity> contenidoTabla = query.getResultList();
+
+            for (int i = 0; i < contenidoTabla.size(); i++){
+                if(contenidoTabla.get(i).getId().equals(IDJuguete)){
+                    index = i;
+                }
+            }
+
+            if(contenidoTabla.get(index).getCantidad() >= cantidad) {
+                int nuevaCantidad = contenidoTabla.get(index).getCantidad() - cantidad;
+                contenidoTabla.get(index).setCantidad(nuevaCantidad);
+                jugueteRepository.save(contenidoTabla.get(index));
+            } else {
+                System.out.println("No se puede vender tantos juguete. Cantidad insuficiente");
+            }
+        }
     }
 }
