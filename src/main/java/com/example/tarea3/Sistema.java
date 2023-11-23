@@ -5,6 +5,7 @@ import com.example.tarea3.repository.AdministradorRepository;
 import com.example.tarea3.model.AdministradoresEntity;
 import com.example.tarea3.repository.JugueteRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,7 @@ public class Sistema {
     private final EntityManager entityManager;
 
     @Autowired
-    private JugueteRepository jugueteRepository;
+    public JugueteRepository jugueteRepository;
 
     @Autowired
     public Sistema(AdministradorRepository administradorRepository, EntityManager entityManager) {
@@ -70,22 +71,31 @@ public class Sistema {
 
     @PostMapping("/verificarCredenciales")
     public String verificarCredenciales(String usuario, String password, Model model) {
-        //TODO: ¿Qué pasa con la contraseña si no existe el usuario?
         AdministradoresEntity usuarioObtenidoDeLaBDD = obtenerUsuarioDeLaBDD(usuario);
-        boolean contraseniaCoincideConUsuarioIngresado = usuarioObtenidoDeLaBDD.getContrasenia().trim().equals(password);
+        if (usuarioObtenidoDeLaBDD != null) {
+            //AdministradoresEntity usuarioObtenidoDeLaBDDCorrecto = obtenerUsuarioDeLaBDD(usuario);
+            boolean contraseniaCoincideConUsuarioIngresado = password.equals(usuarioObtenidoDeLaBDD.getContrasenia().trim());
 
-        if (usuarioObtenidoDeLaBDD == null || !contraseniaCoincideConUsuarioIngresado) {
+            if (!contraseniaCoincideConUsuarioIngresado) {
+                model.addAttribute("error", true);
+                return "Login";
+            } else {
+                return "GestionJuguete";
+            }
+        } else {
             model.addAttribute("error", true);
             return "Login";
         }
-        return "GestionJuguete";
     }
 
-    private AdministradoresEntity obtenerUsuarioDeLaBDD(String usuario) {
-        TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a WHERE a.usuario = :usuario", AdministradoresEntity.class);
-        query.setParameter("usuario", usuario);
-
-        return query.getSingleResult();
+    public AdministradoresEntity obtenerUsuarioDeLaBDD(String usuario) {
+        try {
+            TypedQuery<AdministradoresEntity> query = entityManager.createQuery("SELECT a FROM AdministradoresEntity a WHERE a.usuario = :usuario", AdministradoresEntity.class);
+            query.setParameter("usuario", usuario);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Devuelve null cuando no se encuentra ningún usuario
+        }
     }
 
     @PostConstruct
@@ -112,7 +122,7 @@ public class Sistema {
                 contenidoTabla.get(index).setCantidad(nuevaCantidad);
                 jugueteRepository.save(contenidoTabla.get(index));
             } else {
-                System.out.println("No se puede vender tantos juguete. Cantidad insuficiente");
+                System.out.println("No se puede vender tantos juguetes. Cantidad insuficiente");
             }
         }
     }
