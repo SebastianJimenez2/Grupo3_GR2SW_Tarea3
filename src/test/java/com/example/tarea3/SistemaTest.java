@@ -170,15 +170,7 @@ class SistemaTest {
     public void testVerificarCredenciales() {
         // Configuración del EntityManager mock
         EntityManager entityManager = mock(EntityManager.class);
-        TypedQuery<AdministradoresEntity> query = mock(TypedQuery.class);
-        when(entityManager.createQuery(anyString(), eq(AdministradoresEntity.class))).thenReturn(query);
-
-        // Configurar el resultado para la primera llamada (usuario existente y contraseña correcta)
-        AdministradoresEntity usuarioExistente = new AdministradoresEntity();
-        usuarioExistente.setUsuario("darkchococrispis");
-        usuarioExistente.setContrasenia("123");
-        when(query.setParameter(eq("usuario"), eq("darkchococrispis"))).thenReturn(query);
-        when(query.getSingleResult()).thenReturn(usuarioExistente);
+        TypedQuery<AdministradoresEntity> query = obtenerAdministradoresEntityMock(entityManager);
 
         // Crear la instancia de Sistema con el EntityManager mock
         Sistema sistema = new Sistema(mock(AdministradorRepository.class), entityManager);
@@ -198,5 +190,18 @@ class SistemaTest {
         when(query.getSingleResult()).thenThrow(NoResultException.class); // Simula que no se encontró ningún resultado
         assertEquals("Login", sistema.verificarCredenciales("usuarioInexistente", "123", model3));
         verify(model3).addAttribute("error", true);
+    }
+
+    private static TypedQuery<AdministradoresEntity> obtenerAdministradoresEntityMock(EntityManager entityManager) {
+        TypedQuery<AdministradoresEntity> query = mock(TypedQuery.class);
+        when(entityManager.createQuery(anyString(), eq(AdministradoresEntity.class))).thenReturn(query);
+
+        // Configurar el resultado para la primera llamada (usuario existente y contraseña correcta)
+        AdministradoresEntity usuarioExistente = new AdministradoresEntity();
+        usuarioExistente.setUsuario("darkchococrispis");
+        usuarioExistente.setContrasenia("123");
+        when(query.setParameter(eq("usuario"), eq("darkchococrispis"))).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(usuarioExistente);
+        return query;
     }
 }
