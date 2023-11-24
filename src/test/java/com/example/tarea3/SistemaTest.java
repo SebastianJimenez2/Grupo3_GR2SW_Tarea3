@@ -104,28 +104,30 @@ class SistemaTest {
         int IDJuguete = 1;
         int cantidadAVender = 2;
 
-        juguetesEntity.setId(IDJuguete);
-        juguetesEntity.setCantidad(5);
-        juguetesEntity.setPrecio(BigDecimal.TEN);
-
-        sistema.jugueteRepository.save(juguetesEntity);
+        agregarJugueteABDD(IDJuguete, 5, BigDecimal.TEN);
 
         sistema.venderJuguete(IDJuguete, cantidadAVender);
         juguetesEntity = sistema.jugueteRepository.findById((long) IDJuguete).orElse(null);
         assertEquals(3, juguetesEntity.getCantidad());
     }
 
+
     @Test
     public void testVentaExcedeStock() {
-        juguetesEntity.setId(1);
-        juguetesEntity.setPrecio(new BigDecimal(10));
-        juguetesEntity.setCantidad(3);
-        sistema.jugueteRepository.save(juguetesEntity);
+        agregarJugueteABDD(1, 3, BigDecimal.TEN);
 
         sistema.venderJuguete(1, 5);
         juguetesEntity = sistema.jugueteRepository.findById(1L).orElse(null);
         assertEquals(3, juguetesEntity.getCantidad());
     }
+
+    private void agregarJugueteABDD(int IDJuguete, int cantidad, BigDecimal precio) {
+        juguetesEntity.setId(IDJuguete);
+        juguetesEntity.setCantidad(cantidad);
+        juguetesEntity.setPrecio(precio);
+        sistema.jugueteRepository.save(juguetesEntity);
+    }
+
 
     @Test()
     void testCantidadNulaVenderJuguete() {
