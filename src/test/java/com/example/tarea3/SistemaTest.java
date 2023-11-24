@@ -37,44 +37,34 @@ class SistemaTest {
     ConcurrentModel model = new ConcurrentModel();
     JuguetesEntity juguetesEntity = new JuguetesEntity();
 
-    @Test()
+    @Test
     void testRegistrarJuguete() {
-        int IDJuguete = 29;
-        BigDecimal precioJuguete = BigDecimal.valueOf(1.0);
-        int cantidad = 4;
-
-        boolean existeAntesDeRegistrar = existeJuguete(IDJuguete);
-        sistema.registrarJuguete(IDJuguete, precioJuguete, cantidad, model);
-        boolean existeDespuesDeRegistrar = existeJuguete(IDJuguete);
+        boolean existeAntesDeRegistrar = existeJuguete(29);
+        sistema.registrarJuguete(29, BigDecimal.TEN, 4, model);
+        boolean existeDespuesDeRegistrar = existeJuguete(29);
 
         assertFalse(existeAntesDeRegistrar);
         assertTrue(existeDespuesDeRegistrar);
     }
 
-    @Test()
+    @Test
     @Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
     void testRegistrarJugueteEjecutando() {
-        int IDJuguete = 29;
-        BigDecimal precioJuguete = BigDecimal.valueOf(1.0);
-        int cantidad = 4;
-
-        boolean existeAntesDeRegistrar = existeJuguete(IDJuguete);
-        sistema.registrarJuguete(IDJuguete, precioJuguete, cantidad, model);
-        boolean existeDespuesDeRegistrar = existeJuguete(IDJuguete);
+        boolean existeAntesDeRegistrar = existeJuguete(29);
+        sistema.registrarJuguete(29, BigDecimal.TEN, 4, model);
+        boolean existeDespuesDeRegistrar = existeJuguete(29);
 
         assertFalse(existeAntesDeRegistrar);
         assertTrue(existeDespuesDeRegistrar);
     }
 
-    @Test()
+    @Test
     void testRegistrarJugueteVacio() {
         Integer IDJuguete = null;
-        BigDecimal precioJuguete = BigDecimal.valueOf(1.0);
-        int cantidad = 4;
 
         assertThrows(NullPointerException.class, () -> {
             boolean existeAntesDeRegistrar = existeJuguete(IDJuguete);
-            sistema.registrarJuguete(IDJuguete, precioJuguete, cantidad, model);
+            sistema.registrarJuguete(IDJuguete, BigDecimal.TEN, 4, model);
             boolean existeDespuesDeRegistrar = existeJuguete(IDJuguete);
 
             assertFalse(existeAntesDeRegistrar);
@@ -101,41 +91,28 @@ class SistemaTest {
 
     @Test
     void testVenderJuguete() {
-        int IDJuguete = 1;
-        int cantidadAVender = 2;
+        sistema.registrarJuguete(29, BigDecimal.TEN, 5, model);
 
-        agregarJugueteABDD(IDJuguete, 5, BigDecimal.TEN);
-
-        sistema.venderJuguete(IDJuguete, cantidadAVender);
-        juguetesEntity = sistema.jugueteRepository.findById((long) IDJuguete).orElse(null);
+        sistema.venderJuguete(29, 2);
+        juguetesEntity = sistema.jugueteRepository.findById((long) 29).orElse(null);
         assertEquals(3, juguetesEntity.getCantidad());
     }
-
 
     @Test
     public void testVentaExcedeStock() {
-        agregarJugueteABDD(1, 3, BigDecimal.TEN);
+        sistema.registrarJuguete(29, BigDecimal.TEN, 3, model);
 
-        sistema.venderJuguete(1, 5);
-        juguetesEntity = sistema.jugueteRepository.findById(1L).orElse(null);
+        sistema.venderJuguete(29, 5);
+        juguetesEntity = sistema.jugueteRepository.findById((long) 1).orElse(null);
         assertEquals(3, juguetesEntity.getCantidad());
     }
 
-    private void agregarJugueteABDD(int IDJuguete, int cantidad, BigDecimal precio) {
-        juguetesEntity.setId(IDJuguete);
-        juguetesEntity.setCantidad(cantidad);
-        juguetesEntity.setPrecio(precio);
-        sistema.jugueteRepository.save(juguetesEntity);
-    }
-
-
-    @Test()
+    @Test
     void testCantidadNulaVenderJuguete() {
-        int IDJuguete = 2;
         Integer cantidad = null;
 
         assertThrows(NullPointerException.class, () -> {
-            sistema.venderJuguete(IDJuguete, cantidad);
+            sistema.venderJuguete(2, cantidad);
         });
     }
 
