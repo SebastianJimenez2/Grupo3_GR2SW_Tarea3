@@ -33,13 +33,15 @@ class SistemaTest {
 
     @Autowired
     private Sistema sistema;
+    // Variables que se usan en la mayoría de test instanciadas de forma global
+    ConcurrentModel model = new ConcurrentModel();
+    JuguetesEntity juguetesEntity = new JuguetesEntity();
 
     @Test()
     void testRegistrarJuguete() {
         int IDJuguete = 29;
         BigDecimal precioJuguete = BigDecimal.valueOf(1.0);
         int cantidad = 4;
-        ConcurrentModel model = new ConcurrentModel();
 
         boolean existeAntesDeRegistrar = existeJuguete(IDJuguete);
         sistema.registrarJuguete(IDJuguete, precioJuguete, cantidad, model);
@@ -55,7 +57,6 @@ class SistemaTest {
         int IDJuguete = 29;
         BigDecimal precioJuguete = BigDecimal.valueOf(1.0);
         int cantidad = 4;
-        ConcurrentModel model = new ConcurrentModel();
 
         boolean existeAntesDeRegistrar = existeJuguete(IDJuguete);
         sistema.registrarJuguete(IDJuguete, precioJuguete, cantidad, model);
@@ -70,7 +71,6 @@ class SistemaTest {
         Integer IDJuguete = null;
         BigDecimal precioJuguete = BigDecimal.valueOf(1.0);
         int cantidad = 4;
-        ConcurrentModel model = new ConcurrentModel();
 
         assertThrows(NullPointerException.class, () -> {
             boolean existeAntesDeRegistrar = existeJuguete(IDJuguete);
@@ -92,7 +92,6 @@ class SistemaTest {
     public void testVerificarCredencialesUsuarioNoExiste() {
         String usuarioNoExistente = "asd";
         String password = "1234";
-        ConcurrentModel model = new ConcurrentModel();
 
         String result = sistema.verificarCredenciales(usuarioNoExistente, password, model);
 
@@ -105,29 +104,27 @@ class SistemaTest {
         int IDJuguete = 1;
         int cantidadAVender = 2;
 
-        JuguetesEntity jugueteExistente = new JuguetesEntity();
-        jugueteExistente.setId(IDJuguete);
-        jugueteExistente.setCantidad(5);
-        jugueteExistente.setPrecio(BigDecimal.TEN);
+        juguetesEntity.setId(IDJuguete);
+        juguetesEntity.setCantidad(5);
+        juguetesEntity.setPrecio(BigDecimal.TEN);
 
-        sistema.jugueteRepository.save(jugueteExistente);
+        sistema.jugueteRepository.save(juguetesEntity);
 
         sistema.venderJuguete(IDJuguete, cantidadAVender);
-        JuguetesEntity jugueteDespuesDeVenta = sistema.jugueteRepository.findById((long) IDJuguete).orElse(null);
-        assertEquals(3, jugueteDespuesDeVenta.getCantidad());
+        juguetesEntity = sistema.jugueteRepository.findById((long) IDJuguete).orElse(null);
+        assertEquals(3, juguetesEntity.getCantidad());
     }
 
     @Test
     public void testVentaExcedeStock() {
-        JuguetesEntity juguete = new JuguetesEntity();
-        juguete.setId(1);
-        juguete.setPrecio(new BigDecimal(10));
-        juguete.setCantidad(3);
-        sistema.jugueteRepository.save(juguete);
+        juguetesEntity.setId(1);
+        juguetesEntity.setPrecio(new BigDecimal(10));
+        juguetesEntity.setCantidad(3);
+        sistema.jugueteRepository.save(juguetesEntity);
 
         sistema.venderJuguete(1, 5);
-        JuguetesEntity jugueteDespuesDeVenta = sistema.jugueteRepository.findById(1L).orElse(null);
-        assertEquals(3, jugueteDespuesDeVenta.getCantidad());
+        juguetesEntity = sistema.jugueteRepository.findById(1L).orElse(null);
+        assertEquals(3, juguetesEntity.getCantidad());
     }
 
     @Test()
@@ -142,7 +139,6 @@ class SistemaTest {
 
     @Test
     public void testRegistroYGeneracionComprobanteExitoso() {
-        ConcurrentModel model = new ConcurrentModel();
         String resultadoRegistro = sistema.registrarJuguete(29, new BigDecimal(20), 10, model);
 
         assertEquals("Comprobante", resultadoRegistro);
