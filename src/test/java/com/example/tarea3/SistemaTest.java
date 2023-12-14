@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ConcurrentModel;
+
 import java.math.BigDecimal;
+
 import org.springframework.ui.Model;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -39,9 +42,11 @@ class SistemaTest {
 
     @Test
     void testRegistrarJuguete() {
-        boolean existeAntesDeRegistrar = sistema.existeJuguete(29);;
+        boolean existeAntesDeRegistrar = sistema.existeJuguete(29);
+        ;
         sistema.registrarJuguete(29, BigDecimal.TEN, 4, model);
-        boolean existeDespuesDeRegistrar = sistema.existeJuguete(29);;
+        boolean existeDespuesDeRegistrar = sistema.existeJuguete(29);
+        ;
 
         assertFalse(existeAntesDeRegistrar);
         assertTrue(existeDespuesDeRegistrar);
@@ -50,9 +55,11 @@ class SistemaTest {
     @Test
     @Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
     void testRegistrarJugueteEjecutando() {
-        boolean existeAntesDeRegistrar = sistema.existeJuguete(29);;
+        boolean existeAntesDeRegistrar = sistema.existeJuguete(29);
+        ;
         sistema.registrarJuguete(29, BigDecimal.TEN, 4, model);
-        boolean existeDespuesDeRegistrar = sistema.existeJuguete(29);;
+        boolean existeDespuesDeRegistrar = sistema.existeJuguete(29);
+        ;
 
         assertFalse(existeAntesDeRegistrar);
         assertTrue(existeDespuesDeRegistrar);
@@ -63,9 +70,11 @@ class SistemaTest {
         Integer IDJuguete = null;
 
         assertThrows(NullPointerException.class, () -> {
-            boolean existeAntesDeRegistrar = sistema.existeJuguete(29);;
+            boolean existeAntesDeRegistrar = sistema.existeJuguete(29);
+            ;
             sistema.registrarJuguete(IDJuguete, BigDecimal.TEN, 4, model);
-            boolean existeDespuesDeRegistrar = sistema.existeJuguete(29);;
+            boolean existeDespuesDeRegistrar = sistema.existeJuguete(29);
+            ;
 
             assertFalse(existeAntesDeRegistrar);
             assertTrue(existeDespuesDeRegistrar);

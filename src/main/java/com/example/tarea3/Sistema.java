@@ -103,21 +103,21 @@ public class Sistema {
         venderJuguete(12, 2);
     }
 
-    public void venderJuguete(int IDJuguete, int cantidad){
+    public void venderJuguete(int IDJuguete, int cantidad) {
         int index = 0;
         boolean elJugueteExiste = existeJuguete(IDJuguete);
 
-        if (elJugueteExiste){
+        if (elJugueteExiste) {
             TypedQuery<JuguetesEntity> query = entityManager.createQuery("SELECT a FROM JuguetesEntity a", JuguetesEntity.class);
             List<JuguetesEntity> contenidoTabla = query.getResultList();
 
-            for (int i = 0; i < contenidoTabla.size(); i++){
-                if(contenidoTabla.get(i).getId().equals(IDJuguete)){
+            for (int i = 0; i < contenidoTabla.size(); i++) {
+                if (contenidoTabla.get(i).getId().equals(IDJuguete)) {
                     index = i;
                 }
             }
 
-            if(contenidoTabla.get(index).getCantidad() >= cantidad) {
+            if (contenidoTabla.get(index).getCantidad() >= cantidad) {
                 int nuevaCantidad = contenidoTabla.get(index).getCantidad() - cantidad;
                 contenidoTabla.get(index).setCantidad(nuevaCantidad);
                 jugueteRepository.save(contenidoTabla.get(index));

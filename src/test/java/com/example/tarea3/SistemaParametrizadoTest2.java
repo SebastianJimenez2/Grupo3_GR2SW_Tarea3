@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ConcurrentModel;
+
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;

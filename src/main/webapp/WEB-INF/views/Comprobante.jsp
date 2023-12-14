@@ -52,7 +52,7 @@
 </head>
 
 <body>
-<div id = "contenedor">
+<div id="contenedor">
     <% String idJuguete = request.getParameter("IDJuguete"); %>
     <% String precioJuguete = request.getParameter("PrecioJuguete"); %>
     <% String cantidad = request.getParameter("Cantidad"); %>
@@ -64,21 +64,24 @@
     <label>ID del Juguete:</label>
     <br>
     <div class="cuadro">
-        <label><%= idJuguete %></label>
+        <label><%= idJuguete %>
+        </label>
     </div>
     <br>
 
     <label>Precio:</label>
     <br>
     <div class="cuadro">
-        <label><%= precioJuguete %></label>
+        <label><%= precioJuguete %>
+        </label>
     </div>
     <br>
 
     <label>Cantidad:</label>
     <br>
     <div class="cuadro">
-        <label><%= cantidad %></label>
+        <label><%= cantidad %>
+        </label>
     </div>
 </div>
 </body>

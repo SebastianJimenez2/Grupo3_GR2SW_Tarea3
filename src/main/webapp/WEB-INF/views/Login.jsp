@@ -69,7 +69,7 @@
         if (error_login) {
 %>
 <script>
-            alert("Credenciales incorrectas");
+    alert("Credenciales incorrectas");
 </script>
 <%
         }
