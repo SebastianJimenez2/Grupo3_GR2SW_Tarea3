@@ -1,0 +1,9 @@
+com\example\tarea3\model\JuguetesEntity.class
+com\example\tarea3\Sistema.class
+com\example\tarea3\Comprobante.class
+com\example\tarea3\controller\JugueteController.class
+com\example\tarea3\model\AdministradoresEntity.class
+com\example\tarea3\controller\AdministradorController.class
+com\example\tarea3\repository\AdministradorRepository.class
+com\example\tarea3\repository\JugueteRepository.class
+com\example\tarea3\Tarea3Application.class
