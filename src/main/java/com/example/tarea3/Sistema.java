@@ -57,8 +57,8 @@ public class Sistema {
     }
 
     private String generacionDeComprobanteDeJugueteRegistrado(Model model, JuguetesEntity juguete) {
-        Comprobante comprobante = new Comprobante();
-        comprobante.generarComprobante(juguete, model);
+        //Comprobante comprobante = new Comprobante();
+        //comprobante.generarComprobante(juguete, model);
         return "Comprobante";
     }
 
@@ -80,7 +80,7 @@ public class Sistema {
                 model.addAttribute("error", true);
                 return "Login";
             } else {
-                return "GestionJuguete";
+                return "OpcionesDeAdministrador";
             }
         } else {
             model.addAttribute("error", true);
@@ -98,12 +98,8 @@ public class Sistema {
         }
     }
 
-    @PostConstruct
-    public void init() {
-        venderJuguete(12, 2);
-    }
-
-    public void venderJuguete(int IDJuguete, int cantidad) {
+    @PostMapping("/vender-juguete")
+    public String venderJuguete(@RequestParam int IDJuguete, @RequestParam int cantidad, Model model) {
         int index = 0;
         boolean elJugueteExiste = existeJuguete(IDJuguete);
 
@@ -117,13 +113,21 @@ public class Sistema {
                 }
             }
 
-            if (contenidoTabla.get(index).getCantidad() >= cantidad) {
-                int nuevaCantidad = contenidoTabla.get(index).getCantidad() - cantidad;
-                contenidoTabla.get(index).setCantidad(nuevaCantidad);
-                jugueteRepository.save(contenidoTabla.get(index));
-            } else {
-                System.out.println("No se puede vender tantos juguetes. Cantidad insuficiente");
+            if (contenidoTabla.get(index).getCantidad() <= cantidad) {
+                model.addAttribute("errorCantidadInsuficiente", true);
+                return "VentaJuguete";
             }
+
+            int nuevaCantidad = contenidoTabla.get(index).getCantidad() - cantidad;
+            contenidoTabla.get(index).setCantidad(nuevaCantidad);
+            jugueteRepository.save(contenidoTabla.get(index));
+
+            Comprobante comprobante = new Comprobante();
+            comprobante.generarComprobanteVenta(nuevaCantidad, contenidoTabla.get(index).getPrecio(), model);
+            return "ComprobanteDeVenta";
         }
+
+        model.addAttribute("errorJugueteNoExiste", true);
+        return "VentaJuguete";
     }
 }

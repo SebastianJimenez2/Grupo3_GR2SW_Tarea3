@@ -96,7 +96,7 @@ class SistemaTest {
     void testVenderJuguete() {
         sistema.registrarJuguete(29, BigDecimal.TEN, 5, model);
 
-        sistema.venderJuguete(29, 2);
+        sistema.venderJuguete(29, 2, model);
         juguetesEntity = sistema.jugueteRepository.findById((long) 29).orElse(null);
         assertEquals(3, juguetesEntity.getCantidad());
     }
@@ -105,7 +105,7 @@ class SistemaTest {
     public void testVentaExcedeStock() {
         sistema.registrarJuguete(29, BigDecimal.TEN, 3, model);
 
-        sistema.venderJuguete(29, 5);
+        sistema.venderJuguete(29, 5, model);
         juguetesEntity = sistema.jugueteRepository.findById((long) 1).orElse(null);
         assertEquals(3, juguetesEntity.getCantidad());
     }
@@ -115,7 +115,7 @@ class SistemaTest {
         Integer cantidad = null;
 
         assertThrows(NullPointerException.class, () -> {
-            sistema.venderJuguete(2, cantidad);
+            sistema.venderJuguete(2, cantidad, model);
         });
     }
 

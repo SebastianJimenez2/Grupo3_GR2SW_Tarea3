@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ConcurrentModel;
 
 import java.math.BigDecimal;
 import java.util.stream.Stream;
@@ -24,6 +25,7 @@ public class SistemaParametrizadoTest {
     @Autowired
     private Sistema sistema;
 
+    ConcurrentModel model = new ConcurrentModel();
     @Transactional
     @ParameterizedTest
     @MethodSource("parameters")
@@ -34,7 +36,7 @@ public class SistemaParametrizadoTest {
         juguete.setCantidad(5);
         jugueteRepository.save(juguete);
 
-        sistema.venderJuguete(idJuguete, cantidadVendida);
+        sistema.venderJuguete(idJuguete, cantidadVendida, model);
 
         JuguetesEntity jugueteDespuesDeVenta = jugueteRepository.findById((long) idJuguete).orElse(null);
         assertNotNull(jugueteDespuesDeVenta);
