@@ -16,6 +16,18 @@
             margin: 0;
         }
 
+        #registrarse{
+            padding-left: 260px;
+        }
+
+        #user{
+            margin: 0 0 10px 0;
+        }
+
+        #contrasenia{
+            margin: 0 0 20px 0;
+        }
+
         form {
             background-color: rgba(255, 255, 255, 0.7);
             width: 500px;
@@ -26,13 +38,11 @@
 
         label {
             display: block;
-            margin-bottom: 10px;
         }
 
         input {
             width: 65%;
             padding: 8px;
-            margin-bottom: 15px;
             box-sizing: border-box;
         }
 
@@ -52,11 +62,16 @@
 
 <form action="/verificarCredenciales" method="post">
     <h1>Bienvenido a Jugueton</h1>
-    <label for="usuario">Usuario:</label>
-    <input type="text" id="usuario" name="usuario" required><br>
 
-    <label for="password">Contrasenia:</label>
-    <input type="password" id="password" name="password" required><br>
+    <div id="user">
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required><br>
+    </div>
+
+    <div id="contrasenia">
+        <label for="password">Contrasenia:</label>
+        <input type="password" id="password" name="password" required><br>
+    </div>
 
     <input type="submit" value="Login">
 </form>
