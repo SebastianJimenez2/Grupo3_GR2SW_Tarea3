@@ -4,7 +4,6 @@ import com.example.tarea3.model.JuguetesEntity;
 import com.example.tarea3.repository.AdministradorRepository;
 import com.example.tarea3.model.AdministradoresEntity;
 import com.example.tarea3.repository.JugueteRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.swing.*;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -37,6 +35,61 @@ public class Sistema {
     public String mostrarFormulario(Model model) {
         model.addAttribute("administrador", new AdministradoresEntity());
         return "Login";
+    }
+
+    @PostMapping("/aniadir-admin")
+    public String añadirAdministrador(@RequestParam String nombre,
+                                      @RequestParam String apellido,
+                                      @RequestParam String usuario,
+                                      @RequestParam String contrasena,
+                                      @RequestParam String confirmarContrasena,
+                                      Model model) {
+        if (camposEstánVacios(nombre, apellido, usuario, contrasena, confirmarContrasena)) {
+            model.addAttribute("errorCamposVacios", true);
+            return "Registrarse";
+        }
+
+        if (verificarUsuariosExistentes(usuario)) {
+            model.addAttribute("errorUsuarioRepetido", true);
+            return "Registrarse";
+        }
+
+        if (!contrasena.equals(confirmarContrasena)) {
+            model.addAttribute("errorContrasenasDiferentes", true);
+            return "Registrarse";
+        }
+
+        AdministradoresEntity administradores = new AdministradoresEntity();
+
+        administradores.setUsuario(usuario);
+        administradores.setNombre(nombre);
+        administradores.setApellido(apellido);
+        administradores.setContrasenia(contrasena);
+
+        administradorRepository.save(administradores);
+
+        return "Login";
+    }
+
+    private boolean camposEstánVacios(String... campos) {
+        for (String campo : campos) {
+            if (campo.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean verificarUsuariosExistentes(String usuarioEnviado) {
+        TypedQuery<String> query = entityManager.createQuery("SELECT a.usuario FROM AdministradoresEntity a", String.class);
+        List<String> usuarios = query.getResultList();
+
+        for (String usuario : usuarios) {
+            if (usuario.trim().equals(usuarioEnviado)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @PostMapping("/registrar-juguete")
@@ -73,7 +126,6 @@ public class Sistema {
     public String verificarCredenciales(String usuario, String password, Model model) {
         AdministradoresEntity usuarioObtenidoDeLaBDD = obtenerUsuarioDeLaBDD(usuario);
         if (usuarioObtenidoDeLaBDD != null) {
-            //AdministradoresEntity usuarioObtenidoDeLaBDDCorrecto = obtenerUsuarioDeLaBDD(usuario);
             boolean contraseniaCoincideConUsuarioIngresado = password.equals(usuarioObtenidoDeLaBDD.getContrasenia().trim());
 
             if (!contraseniaCoincideConUsuarioIngresado) {

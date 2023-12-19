@@ -126,6 +126,52 @@ class SistemaTest {
         assertEquals("Comprobante", resultadoRegistro);
     }
 
+    @Test
+    public void testContraseñasCoinciden(){
+        String result = sistema.añadirAdministrador(
+                "Sebas",
+                "Jimenez",
+                "blablabla",
+                "123",
+                "123",
+                model
+        );
+
+        assertEquals("Login", result);
+        assertNull(model.getAttribute("errorContrasenasDiferentes"));
+    }
+
+    @Test
+    public void camposVaciosEnElFormulario(){
+        String result = sistema.añadirAdministrador(
+                "",
+                "",
+                "",
+                "",
+                "",
+                model
+        );
+
+        assertEquals("Registrarse", result);
+        assertEquals(true, model.getAttribute("errorCamposVacios"));
+    }
+
+    @Test
+    public void usuarioExistente(){
+        String result = sistema.añadirAdministrador(
+                "Sebas",
+                "Jiménez",
+                "seebaas",
+                "123",
+                "123",
+                model
+        );
+
+        assertEquals("Registrarse", result);
+        assertEquals(true, model.getAttribute("errorUsuarioRepetido"));
+    }
+
+
     /*-------------------------------------------------------MOCO-----------------------------------------------------*/
 
     @Test
