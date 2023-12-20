@@ -5,7 +5,7 @@
     <title>Bienvenida</title>
     <script>
         function reporte() {
-            window.location.href = 'reporteJuguetes.jsp';
+            window.location.href = 'ReporteJuguetes.jsp';
         }
         function registrar() {
             window.location.href = 'GestionJuguete.jsp';
@@ -53,7 +53,11 @@
 <div>
     <button onclick="registrar()"><img src="https://cdn-icons-png.flaticon.com/512/3200/3200751.png" alt="Ícono" /><br>REGISTRAR JUGUETE</button><br>
     <button onclick="vender()"><img src="https://cdn-icons-png.flaticon.com/512/1992/1992622.png" alt="Ícono" /><br>VENDER JUGUETE</button><br>
-    <button onclick="reporte()"><img src="https://cdn-icons-png.flaticon.com/512/2615/2615119.png" alt="Ícono" /><br>VER INFORME DE STOCK</button><br>
+
+    <form action="/stock" method="POST">
+        <button onclick="reporte()"><img src="https://cdn-icons-png.flaticon.com/512/2615/2615119.png" alt="Ícono" /><br>VER INFORME DE STOCK</button><br>
+    </form>
+
     <button onclick="registrarAdmin()"><img src="https://cdn-icons-png.flaticon.com/512/2615/2615119.png" alt="Ícono" /><br>REGISTRAR NUEVO ADMIN</button><br>
 </div>
 </body>

@@ -182,4 +182,12 @@ public class Sistema {
         model.addAttribute("errorJugueteNoExiste", true);
         return "VentaJuguete";
     }
+
+    @PostMapping("/stock")
+    public String generarInformeCantidadProductos(Model model) {
+        List<JuguetesEntity> listaJuguetes = entityManager.createQuery("SELECT j FROM JuguetesEntity j", JuguetesEntity.class).getResultList();
+        model.addAttribute("juguetesList", listaJuguetes);
+
+        return "ReporteJuguetes";
+    }
 }
