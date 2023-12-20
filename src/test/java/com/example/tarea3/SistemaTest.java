@@ -201,7 +201,7 @@ class SistemaTest {
 
         // Credenciales correctas
         Model model1 = mock(Model.class);
-        assertEquals("GestionJuguete", sistema.verificarCredenciales("darkchococrispis", "123", model1));
+        assertEquals("OpcionesDeAdministrador", sistema.verificarCredenciales("darkchococrispis", "123", model1));
         verify(model1, never()).addAttribute(eq("error"), any());
 
         // Contraseña incorrecta
@@ -227,5 +227,14 @@ class SistemaTest {
         when(query.setParameter(eq("usuario"), eq("darkchococrispis"))).thenReturn(query);
         when(query.getSingleResult()).thenReturn(usuarioExistente);
         return query;
+    }
+
+    @Test
+    void testGenerarInformeCantidadProductos() {
+        Model model = mock(Model.class);
+
+        String resultado = sistema.generarInformeCantidadProductos(model);
+
+        assertEquals("ReporteJuguetes", resultado);
     }
 }
