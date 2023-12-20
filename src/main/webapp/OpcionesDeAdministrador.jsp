@@ -21,7 +21,7 @@
         h2{
             font-size: 50px;
             color: #060843;
-            margin-top: 20px;
+            margin-top: 180px;
             text-align:center;
         }
 
@@ -34,8 +34,8 @@
         }
 
         button{
-            height: 150px;
-            weight: 100px;
+            height: 200px;
+            width: 200px;
             background-color: #76C5F5;
             border: 5px solid #13567F;
             margin: 30px;
@@ -44,6 +44,11 @@
         img{
             height: 80px;
             weight: 80px;
+        }
+
+        div {
+            display: flex;
+            justify-content: space-around;
         }
     </style>
 </head>
