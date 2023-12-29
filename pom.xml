@@ -107,8 +107,8 @@
         </plugin>
          <plugin>
             <groupId>org.apache.tomcat.maven</groupId>
-            <artifactId>tomcat9-maven-plugin</artifactId>
-            <version>2.5</version> <!-- Usa la última versión disponible -->
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version> <!-- Usa la última versión disponible -->
             <configuration>
                 <url>${tomcat.server.url}</url>
                 <server>TomcatServer</server>
