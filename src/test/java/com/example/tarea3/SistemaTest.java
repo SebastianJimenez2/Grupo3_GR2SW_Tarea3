@@ -187,7 +187,7 @@ class SistemaTest {
     }
 
     @Test
-    public void resultadoSobreBorradoExitoso() {
+    public void resultadoSobreBorradoFallido() {
         String result = sistema.borrarJugueteDeLaBDD(999, model);
 
         assertEquals("BorrarJuguete", result);
