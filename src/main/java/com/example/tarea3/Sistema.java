@@ -214,10 +214,9 @@ public class Sistema {
         }
     }
 
-
     @PostMapping("/borrarJuguete")
     public String borrarJugueteDeLaBDD(@RequestParam int IDBorrar, Model model) {
-        if (jugueteRepository.existsById((long) IDBorrar)) {
+        if (existeJuguete(IDBorrar)) {
             jugueteRepository.deleteById((long) IDBorrar);
             model.addAttribute("jugueteBorrado", true);
             return "OpcionesDeAdministrador";
