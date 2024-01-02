@@ -171,6 +171,28 @@ class SistemaTest {
         assertEquals(true, model.getAttribute("errorUsuarioRepetido"));
     }
 
+    @Test
+    public void testBuscarInformacionPorID(){
+        String result = sistema.buscarInformacionPorID(3, model);
+
+        assertEquals("BusquedaJuguete", result);
+    }
+
+    @Test
+    public void resultadoSobreBorradoExitoso() {
+        String result = sistema.borrarJugueteDeLaBDD(1, model);
+
+        assertEquals("OpcionesDeAdministrador", result);
+        assertEquals(true, model.getAttribute("jugueteBorrado"));
+    }
+
+    @Test
+    public void resultadoSobreBorradoExitoso() {
+        String result = sistema.borrarJugueteDeLaBDD(999, model);
+
+        assertEquals("BorrarJuguete", result);
+        assertEquals(false, model.getAttribute("jugueteBorrado"));
+    }
 
     /*-------------------------------------------------------MOCO-----------------------------------------------------*/
 
