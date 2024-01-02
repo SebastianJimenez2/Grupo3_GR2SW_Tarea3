@@ -7,6 +7,7 @@ import com.example.tarea3.repository.JugueteRepository;
 import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.persistence.EntityManager;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -189,5 +191,31 @@ public class Sistema {
         model.addAttribute("juguetesList", listaJuguetes);
 
         return "ReporteJuguetes";
+    }
+
+    @PostMapping("/jugueteID")
+    public String buscarInformacionPorID(@RequestParam int IDJuguete, Model model) {
+        TypedQuery<JuguetesEntity> query = entityManager.createQuery("SELECT j FROM JuguetesEntity j WHERE j.id = :IDJuguete", JuguetesEntity.class);
+        query.setParameter("IDJuguete", IDJuguete);
+        JuguetesEntity jugueteObtenido = query.getSingleResult();
+
+        if (jugueteObtenido != null) {
+            List<JuguetesEntity> juguetesList = new ArrayList<>();
+            juguetesList.add(jugueteObtenido);
+            model.addAttribute("jugueteBuscado", juguetesList);
+        }
+        return "BusquedaJuguete";
+    }
+
+    @PostMapping("/borrarJuguete")
+    public String borrarJugueteDeLaBDD(@RequestParam int IDBorrar, Model model) {
+        if (jugueteRepository.existsById((long) IDBorrar)) {
+            jugueteRepository.deleteById((long) IDBorrar);
+            model.addAttribute("jugueteBorrado", true);
+            return "OpcionesDeAdministrador";
+        } else {
+            model.addAttribute("jugueteBorrado", false);
+            return "BorrarJuguete";
+        }
     }
 }

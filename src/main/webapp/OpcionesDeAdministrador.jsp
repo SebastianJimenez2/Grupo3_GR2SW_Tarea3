@@ -121,6 +121,20 @@
                 alt="Ícono"/><br>BORRAR JUGUETE DE LA BDD
         </button>
     </div>
+
+    <%
+        boolean jugueteBorrado;
+        if (request.getAttribute("jugueteBorrado") != null) {
+            jugueteBorrado = (boolean) request.getAttribute("jugueteBorrado");
+
+            if (jugueteBorrado) {
+    %>
+    <script> alert("El juguete ha sido borrado"); </script>
+    <%
+            }
+        }
+    %>
+
 </div>
 </body>
 </html>

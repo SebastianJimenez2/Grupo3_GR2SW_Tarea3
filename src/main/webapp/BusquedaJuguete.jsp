@@ -100,5 +100,31 @@
         <th>Cantidad</th>
     </tr>
     </thead>
+    <tbody>
+    <%
+        List<JuguetesEntity> juguetesList = (List<JuguetesEntity>) request.getAttribute("jugueteBuscado");
+        if (juguetesList != null && !juguetesList.isEmpty()) {
+            for (JuguetesEntity juguete : juguetesList) {
+    %>
+    <tr>
+        <td><%= juguete.getId() %>
+        </td>
+        <td><%= juguete.getPrecio() %>
+        </td>
+        <td><%= juguete.getCantidad() %>
+        </td>
+    </tr>
+    <%
+        }
+    } else {
+    %>
+    <tr>
+        <td colspan="3">Registro no identificado</td>
+    </tr>
+    <%
+        }
+    %>
+    </tbody>
+
 </table>
 </body>
