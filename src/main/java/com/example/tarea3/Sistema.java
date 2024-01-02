@@ -195,10 +195,7 @@ public class Sistema {
 
     @PostMapping("/jugueteID")
     public String buscarInformacionPorID(@RequestParam int IDJuguete, Model model) {
-        TypedQuery<JuguetesEntity> query = entityManager.createQuery("SELECT j FROM JuguetesEntity j WHERE j.id = :IDJuguete", JuguetesEntity.class);
-        query.setParameter("IDJuguete", IDJuguete);
-        JuguetesEntity jugueteObtenido = query.getSingleResult();
-
+        JuguetesEntity jugueteObtenido = obtenerJuguete(IDJuguete);
         if (jugueteObtenido != null) {
             List<JuguetesEntity> juguetesList = new ArrayList<>();
             juguetesList.add(jugueteObtenido);
@@ -206,6 +203,17 @@ public class Sistema {
         }
         return "BusquedaJuguete";
     }
+
+    public JuguetesEntity obtenerJuguete(int IDJuguete) {
+        try {
+            TypedQuery<JuguetesEntity> query = entityManager.createQuery("SELECT j FROM JuguetesEntity j WHERE j.id = :IDJuguete", JuguetesEntity.class);
+            query.setParameter("IDJuguete", IDJuguete);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
     @PostMapping("/borrarJuguete")
     public String borrarJugueteDeLaBDD(@RequestParam int IDBorrar, Model model) {
